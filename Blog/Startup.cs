@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Blog.Data;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Blog
 {
@@ -41,6 +42,11 @@ namespace Blog
             {
                 app.UseExceptionHandler("/Error");
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseStaticFiles();
 
