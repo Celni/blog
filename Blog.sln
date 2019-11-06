@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog", "Blog\Blog.csproj", "{5935A17C-3535-43DE-988E-C084CEA205ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog", "src\Blog\Blog.csproj", "{5935A17C-3535-43DE-988E-C084CEA205ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4D091340-EA27-4C1D-A4C5-0935ED495219}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{B319F7A3-968F-4F8C-BF32-5D9CEB826388}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile.arm32v7 = Dockerfile.arm32v7
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +25,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5935A17C-3535-43DE-988E-C084CEA205ED} = {4D091340-EA27-4C1D-A4C5-0935ED495219}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E0D95C93-C2D7-400E-8467-D978342DB6A1}
