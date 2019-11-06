@@ -2,8 +2,8 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
-COPY ["./*.sln", "."]
-COPY ["/src/Blog/*.csproj", "./Blog/"]
+COPY *.sln .
+COPY ["src/Blog/*.csproj", "./Blog/"]
 RUN dotnet restore
 
 # copy everything else and build app
