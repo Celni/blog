@@ -3,20 +3,22 @@ WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
-COPY ["src/Blog/*.csproj", "./src/Blog/"]
+COPY ["src/Blog.Web/*.csproj", "./src/Blog.Web/"]
+COPY ["src/Blog.Core/*.csproj", "./src/Blog.Core/"]
+COPY ["src/Blog.Persistence/*.csproj", "./src/Blog.Persistence/"]
 RUN dotnet restore
 
 # copy everything else and build app
 COPY . .
-WORKDIR /app/src/Blog/
+WORKDIR /app/src/Blog.Web/
 RUN dotnet build -r linux-arm
 
 FROM build AS publish
-WORKDIR /app/src/Blog/
+WORKDIR /app/src/Blog.Web/
 RUN dotnet publish -c Release -o out -r linux-arm
 
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-disco-arm32v7 AS runtime
 WORKDIR /app
-COPY --from=publish /app/src/Blog/out ./
-ENTRYPOINT ["dotnet", "Blog.dll"]
+COPY --from=publish /app/src/Blog.Web/out ./
+ENTRYPOINT ["dotnet", "Blog.Web.dll"]
