@@ -35,8 +35,10 @@ namespace Blog.Web
         {
 
             services.AddDbContext<IdentityContext>(options =>
+            {
                 options.UseNpgsql(
-                    Configuration.GetConnectionString("IdentityConnection")));
+                    Configuration.GetConnectionString("IdentityConnection"));
+            });
 
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<IdentityContext>();
