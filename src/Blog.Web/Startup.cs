@@ -80,6 +80,19 @@ namespace Blog.Web
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            InitializeDatabase(app);
+        }
+
+        private void InitializeDatabase(IApplicationBuilder app)
+        {
+            using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            
+            scope.ServiceProvider.GetRequiredService<IdentityContext>().Database.EnsureCreated();
+            scope.ServiceProvider.GetRequiredService<IdentityContext>().Database.Migrate();
+
+            scope.ServiceProvider.GetRequiredService<BlogContext>().Database.EnsureCreated();
+            scope.ServiceProvider.GetRequiredService<BlogContext>().Database.Migrate();
         }
     }
 }

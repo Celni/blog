@@ -17,38 +17,9 @@ namespace Blog.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            MigrateContext<IdentityContext>(host);
-            MigrateContext<BlogContext>(host);
-            host.Run();
-        }
-
-
-
-        private static void MigrateContext<TContext>(IHost host) where TContext : DbContext
-        {
-            using var scope = host.Services.CreateScope();
-
-            var services = scope.ServiceProvider;
-            var logger = services.GetRequiredService<ILogger<Program>>();
-
-            try
-            {
-                var context = services.GetRequiredService<TContext>();
-
-                var connectionString = context.Database.GetDbConnection().ConnectionString;
-
-                logger.LogInformation($"Connection string DB {typeof(TContext).Name}: {connectionString}");
-                context.Database.EnsureCreated();
-                context.Database.Migrate();
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, $"An error occurred seeding the DB {typeof(TContext).Name}.");
-            }
-
+            await CreateHostBuilder(args).Build().RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
