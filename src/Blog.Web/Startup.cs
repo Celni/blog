@@ -44,6 +44,8 @@ namespace Blog.Web
             services.AddDbContext<IBlogContext, BlogContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("BlogConnection")));
 
+            services.AddLogging();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
