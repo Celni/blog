@@ -1,8 +1,7 @@
 ﻿@page
-@using Blog.Web.Models
 @using Microsoft.AspNetCore.Identity
 @attribute [IgnoreAntiforgeryToken]
-@inject SignInManager<ApplicationUser> SignInManager
+@inject SignInManager<IdentityUser<long>> SignInManager
 @functions {
     public async Task<IActionResult> OnPost()
     {

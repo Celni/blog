@@ -17,7 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Blog.Web.Areas.Identity;
 using Blog.Web.Data;
-using Blog.Web.Models;
 
 namespace Blog.Web
 {
@@ -42,7 +41,7 @@ namespace Blog.Web
             });
 
 
-            services.AddIdentity<ApplicationUser, IdentityRole<long>>()
+            services.AddIdentity<IdentityUser<long>, IdentityRole<long>>()
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddDefaultTokenProviders();
 
@@ -59,7 +58,7 @@ namespace Blog.Web
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser<long>>>();
             services.AddSingleton<WeatherForecastService>();
 
 

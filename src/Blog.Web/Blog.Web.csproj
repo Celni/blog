@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Blog.Persistence\Blog.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
-  </ItemGroup>
-
 </Project>
