@@ -7,14 +7,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4D091340-EA2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{B319F7A3-968F-4F8C-BF32-5D9CEB826388}"
 	ProjectSection(SolutionItems) = preProject
-		Dockerfile.arm32v7 = Dockerfile.arm32v7
+		build\Dockerfile.arm32v7 = build\Dockerfile.arm32v7
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Web", "src\Blog.Web\Blog.Web.csproj", "{5168002C-7259-40FE-8D05-B69D1C4B3B81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Core", "src\Blog.Core\Blog.Core.csproj", "{33C14391-0B01-4796-B1AC-03135E6B2A26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Persistence", "src\Blog.Persistence\Blog.Persistence.csproj", "{BEA77D54-D657-4295-B820-695FFC5FC372}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Persistence", "src\Blog.Persistence\Blog.Persistence.csproj", "{BEA77D54-D657-4295-B820-695FFC5FC372}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
