@@ -8,14 +8,17 @@ namespace Blog.Core.Domian
 
         public string LastName { get; private set; }
 
+        public string AvatarPath { get; private set; }
+
         public ICollection<Comment> Comments { get; private set; }
 
         private User() { }
 
-        public User(string firstName, string lastName)
+        public User(string firstName, string lastName, string avatarPath)
         {
             FirstName = firstName;
             LastName = lastName;
+            AvatarPath = avatarPath;
             Comments = new List<Comment>();
         }
     }
