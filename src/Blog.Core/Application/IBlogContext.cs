@@ -1,4 +1,6 @@
-﻿using Blog.Core.Domian;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Blog.Core.Domian;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Core.Application
@@ -10,5 +12,9 @@ namespace Blog.Core.Application
         DbSet<Comment> Comments { get; set; }
 
         DbSet<Post> Posts { get; set; }
+
+        int SaveChanges();
+
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 }
