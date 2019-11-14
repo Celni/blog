@@ -1,7 +1,7 @@
 ﻿namespace Blog.Core.Domian
 {
-    public abstract class BaseEntity<TKey>
+    public abstract class BaseEntity
     {
-        public TKey Id { get; protected set; }
+        public long Id { get; protected set; }
     }
 }

@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Blog.Web.Areas.Identity;
 using Blog.Web.Data;
+using Microsoft.Extensions.Logging;
 
 namespace Blog.Web
 {
@@ -100,12 +101,20 @@ namespace Blog.Web
         private void InitializeDatabase(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-            
-            scope.ServiceProvider.GetRequiredService<IdentityContext>().Database.EnsureCreated();
-            scope.ServiceProvider.GetRequiredService<IdentityContext>().Database.Migrate();
+            var logger = app.ApplicationServices.GetService<ILogger<Startup>>();
 
-            scope.ServiceProvider.GetRequiredService<IBlogContext>().Database.EnsureCreated();
-            scope.ServiceProvider.GetRequiredService<IBlogContext>().Database.Migrate();
+            var db = scope.ServiceProvider.GetRequiredService<IdentityContext>().Database;
+            logger.LogWarning($"Configuration IdentityContext: {Configuration.GetConnectionString("IdentityConnection")}");
+            logger.LogWarning($"Connection String in IdentityContext: {db.GetDbConnection().ConnectionString}");
+            db.EnsureCreated();
+            db.Migrate();
+
+            db = scope.ServiceProvider.GetRequiredService<IBlogContext>().Database;
+            logger.LogWarning(Configuration.GetConnectionString("BlogConnection"));
+            logger.LogWarning($"Configuration IBlogContext: {Configuration.GetConnectionString("IdentityConnection")}");
+            logger.LogWarning($"Connection String in IBlogContext: {db.GetDbConnection().ConnectionString}");
+            db.EnsureCreated();
+            db.Migrate();
         }
     }
 }
