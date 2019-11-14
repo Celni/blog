@@ -41,9 +41,12 @@ namespace Blog.Web
             });
 
 
-            services.AddIdentity<IdentityUser<long>, IdentityRole<long>>()
-                .AddEntityFrameworkStores<IdentityContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<IdentityUser<long>, IdentityRole<long>>()
+            //    .AddEntityFrameworkStores<IdentityContext>()
+            //    .AddDefaultTokenProviders();
+
+            services.AddDefaultIdentity<IdentityUser<long>>()
+                .AddEntityFrameworkStores<IdentityContext>();
 
             services.AddAuthentication().AddVkontakte(o =>
             {
