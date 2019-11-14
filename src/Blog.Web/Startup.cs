@@ -101,19 +101,11 @@ namespace Blog.Web
         private void InitializeDatabase(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-            var logger = app.ApplicationServices.GetService<ILogger<Startup>>();
 
             var db = scope.ServiceProvider.GetRequiredService<IdentityContext>().Database;
-            logger.LogWarning($"Configuration IdentityContext: {Configuration.GetConnectionString("IdentityConnection")}");
-            logger.LogWarning($"Connection String in IdentityContext: {db.GetDbConnection().ConnectionString}");
-            db.EnsureCreated();
             db.Migrate();
 
             db = scope.ServiceProvider.GetRequiredService<IBlogContext>().Database;
-            logger.LogWarning(Configuration.GetConnectionString("BlogConnection"));
-            logger.LogWarning($"Configuration IBlogContext: {Configuration.GetConnectionString("IdentityConnection")}");
-            logger.LogWarning($"Connection String in IBlogContext: {db.GetDbConnection().ConnectionString}");
-            db.EnsureCreated();
             db.Migrate();
         }
     }
