@@ -2,7 +2,7 @@
 
 namespace Blog.Core.Domian
 {
-    public class Comment : BaseEntity<ulong>
+    public class Comment : BaseEntity
     {
         public string Text { get; private set; }
 

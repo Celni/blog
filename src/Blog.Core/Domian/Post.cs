@@ -2,7 +2,7 @@
 
 namespace Blog.Core.Domian
 {
-    public class Post : BaseEntity<ulong>
+    public class Post : BaseEntity
     {
         public User Author { get; private set; }
 

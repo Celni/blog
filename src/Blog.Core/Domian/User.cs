@@ -2,7 +2,7 @@
 
 namespace Blog.Core.Domian
 {
-    public class User : BaseEntity<string>
+    public class User : BaseEntity
     { 
         public string FirstName { get; private set; }
 
