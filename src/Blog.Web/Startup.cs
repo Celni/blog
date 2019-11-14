@@ -34,14 +34,22 @@ namespace Blog.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<IdentityContext>(options =>
+            services.AddEntityFrameworkNpgsql().AddDbContext<IdentityContext>(options =>
             {
                 options.UseNpgsql(
                     Configuration.GetConnectionString("IdentityConnection"));
             });
 
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<IdentityContext>();
+
+            services.AddIdentity<IdentityUser<long>, IdentityRole<long>>()
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication().AddVkontakte(o =>
+            {
+                o.ClientId = Configuration["Vk:ClientId"];
+                o.ClientSecret = Configuration["Vk:ClientSecret"];
+            });
 
             services.AddDbContext<IBlogContext, BlogContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("BlogConnection")));
@@ -50,8 +58,10 @@ namespace Blog.Web
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser<long>>>();
             services.AddSingleton<WeatherForecastService>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,8 +101,8 @@ namespace Blog.Web
             scope.ServiceProvider.GetRequiredService<IdentityContext>().Database.EnsureCreated();
             scope.ServiceProvider.GetRequiredService<IdentityContext>().Database.Migrate();
 
-            scope.ServiceProvider.GetRequiredService<BlogContext>().Database.EnsureCreated();
-            scope.ServiceProvider.GetRequiredService<BlogContext>().Database.Migrate();
+            scope.ServiceProvider.GetRequiredService<IBlogContext>().Database.EnsureCreated();
+            scope.ServiceProvider.GetRequiredService<IBlogContext>().Database.Migrate();
         }
     }
 }

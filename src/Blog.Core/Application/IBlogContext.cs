@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Blog.Core.Domian;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Blog.Core.Application
 {
@@ -12,6 +13,8 @@ namespace Blog.Core.Application
         DbSet<Comment> Comments { get; set; }
 
         DbSet<Post> Posts { get; set; }
+
+        DatabaseFacade Database { get; }
 
         int SaveChanges();
 
