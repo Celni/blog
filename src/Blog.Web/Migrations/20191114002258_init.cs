@@ -8,16 +8,12 @@ namespace Blog.Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "identity");
-
             migrationBuilder.CreateSequence(
                 name: "EntityFrameworkHiLoSequence",
                 incrementBy: 10);
 
             migrationBuilder.CreateTable(
                 name: "Role",
-                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -33,7 +29,6 @@ namespace Blog.Web.Migrations
 
             migrationBuilder.CreateTable(
                 name: "User",
-                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -60,7 +55,6 @@ namespace Blog.Web.Migrations
 
             migrationBuilder.CreateTable(
                 name: "RoleClaim",
-                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -75,7 +69,6 @@ namespace Blog.Web.Migrations
                     table.ForeignKey(
                         name: "FK_RoleClaim_Role_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "identity",
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -83,7 +76,6 @@ namespace Blog.Web.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserClaim",
-                schema: "identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -98,7 +90,6 @@ namespace Blog.Web.Migrations
                     table.ForeignKey(
                         name: "FK_UserClaim_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -106,11 +97,10 @@ namespace Blog.Web.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserLogin",
-                schema: "identity",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<long>(nullable: false)
                 },
@@ -120,7 +110,6 @@ namespace Blog.Web.Migrations
                     table.ForeignKey(
                         name: "FK_UserLogin_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -128,7 +117,6 @@ namespace Blog.Web.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserRole",
-                schema: "identity",
                 columns: table => new
                 {
                     UserId = table.Column<long>(nullable: false),
@@ -140,14 +128,12 @@ namespace Blog.Web.Migrations
                     table.ForeignKey(
                         name: "FK_UserRole_Role_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "identity",
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRole_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -155,12 +141,11 @@ namespace Blog.Web.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserToken",
-                schema: "identity",
                 columns: table => new
                 {
                     UserId = table.Column<long>(nullable: false),
-                    LoginProvider = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 128, nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -169,7 +154,6 @@ namespace Blog.Web.Migrations
                     table.ForeignKey(
                         name: "FK_UserToken_User_UserId",
                         column: x => x.UserId,
-                        principalSchema: "identity",
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -177,45 +161,38 @@ namespace Blog.Web.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                schema: "identity",
                 table: "Role",
                 column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaim_RoleId",
-                schema: "identity",
                 table: "RoleClaim",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                schema: "identity",
                 table: "User",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                schema: "identity",
                 table: "User",
                 column: "NormalizedUserName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",
-                schema: "identity",
                 table: "UserClaim",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogin_UserId",
-                schema: "identity",
                 table: "UserLogin",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
-                schema: "identity",
                 table: "UserRole",
                 column: "RoleId");
         }
@@ -223,32 +200,25 @@ namespace Blog.Web.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RoleClaim",
-                schema: "identity");
+                name: "RoleClaim");
 
             migrationBuilder.DropTable(
-                name: "UserClaim",
-                schema: "identity");
+                name: "UserClaim");
 
             migrationBuilder.DropTable(
-                name: "UserLogin",
-                schema: "identity");
+                name: "UserLogin");
 
             migrationBuilder.DropTable(
-                name: "UserRole",
-                schema: "identity");
+                name: "UserRole");
 
             migrationBuilder.DropTable(
-                name: "UserToken",
-                schema: "identity");
+                name: "UserToken");
 
             migrationBuilder.DropTable(
-                name: "Role",
-                schema: "identity");
+                name: "Role");
 
             migrationBuilder.DropTable(
-                name: "User",
-                schema: "identity");
+                name: "User");
 
             migrationBuilder.DropSequence(
                 name: "EntityFrameworkHiLoSequence");

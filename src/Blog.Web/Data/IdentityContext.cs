@@ -22,14 +22,14 @@ namespace Blog.Web.Data
             builder.HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo);
             builder.UseHiLo();
 
-            builder.Entity<IdentityUser<long>>().ToTable("User", "identity");
-            builder.Entity<IdentityRole<long>>().ToTable("Role", "identity");
-            builder.Entity<IdentityUserClaim<long>>().ToTable("UserClaim", "identity");
-            builder.Entity<IdentityRoleClaim<long>>().ToTable("RoleClaim", "identity");
+            builder.Entity<IdentityUser<long>>().ToTable("User");
+            builder.Entity<IdentityRole<long>>().ToTable("Role");
+            builder.Entity<IdentityUserClaim<long>>().ToTable("UserClaim");
+            builder.Entity<IdentityRoleClaim<long>>().ToTable("RoleClaim");
 
-            builder.Entity<IdentityUserLogin<long>>().ToTable("UserLogin", "identity");
-            builder.Entity<IdentityUserRole<long>>().ToTable("UserRole", "identity");
-            builder.Entity<IdentityUserToken<long>>().ToTable("UserToken", "identity");
+            builder.Entity<IdentityUserLogin<long>>().ToTable("UserLogin");
+            builder.Entity<IdentityUserRole<long>>().ToTable("UserRole");
+            builder.Entity<IdentityUserToken<long>>().ToTable("UserToken");
         }
     }
 }
