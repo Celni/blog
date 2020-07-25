@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blog.Core.Application;
 using Blog.Persistence;
+using Blog.Web.Areas;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -15,8 +16,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Blog.Web.Areas.Identity;
 using Blog.Web.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 
 namespace Blog.Web
@@ -41,19 +46,18 @@ namespace Blog.Web
                     Configuration.GetConnectionString("IdentityConnection"));
             });
 
+            services.AddIdentity<IdentityUser<long>, IdentityRole<long>>()
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
 
-            //services.AddIdentity<IdentityUser<long>, IdentityRole<long>>()
-            //    .AddEntityFrameworkStores<IdentityContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddGitHub(o =>
+                {
+                    o.ClientId = Configuration["GitHub:ClientId"];
+                    o.ClientSecret = Configuration["GitHub:ClientSecret"];
+                    o.SaveTokens = true;
+                }).AddCookie();
 
-            services.AddDefaultIdentity<IdentityUser<long>>()
-                .AddEntityFrameworkStores<IdentityContext>();
-
-            services.AddAuthentication().AddVkontakte(o =>
-            {
-                o.ClientId = Configuration["Vk:ClientId"];
-                o.ClientSecret = Configuration["Vk:ClientSecret"];
-            });
 
             services.AddDbContext<IBlogContext, BlogContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("BlogConnection")));
@@ -65,7 +69,17 @@ namespace Blog.Web
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser<long>>>();
             services.AddSingleton<WeatherForecastService>();
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
 
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LogoutPath = $"/LogOut";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +92,7 @@ namespace Blog.Web
             }
             else
             {
+                app.UseForwardedHeaders();
                 app.UseExceptionHandler("/Error");
             }
 
@@ -101,12 +116,31 @@ namespace Blog.Web
         private void InitializeDatabase(IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            var logger = app.ApplicationServices.GetService<ILogger<Startup>>();
 
-            var db = scope.ServiceProvider.GetRequiredService<IdentityContext>().Database;
-            db.Migrate();
+            DatabaseFacade db;
 
-            db = scope.ServiceProvider.GetRequiredService<IBlogContext>().Database;
-            db.Migrate();
+            try
+            {
+                db = scope.ServiceProvider.GetRequiredService<IdentityContext>().Database;
+                db.Migrate();
+            }
+            catch (Exception e)
+            {
+                logger.LogCritical(e, "Context - {db} error migrate", "IdentityContext");
+            }
+
+
+            try
+            {
+                db = scope.ServiceProvider.GetRequiredService<IBlogContext>().Database;
+                db.Migrate();
+            }
+            catch (Exception e)
+            {
+                logger.LogCritical(e, "Context - {db} error migrate", "BlogContext");
+            }
+
         }
     }
 }

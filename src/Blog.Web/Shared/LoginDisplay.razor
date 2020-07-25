@@ -1,12 +1,11 @@
 ﻿<AuthorizeView>
     <Authorized>
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
-        <form method="post" action="Identity/Account/LogOut">
+        <span>Hello, @context.User.Identity.Name!</span>
+        <form method="post" action="LogOut">
             <button type="submit" class="nav-link btn btn-link">Log out</button>
         </form>
     </Authorized>
     <NotAuthorized>
-        <a href="Identity/Account/Register">Register</a>
-        <a href="Identity/Account/Login">Log in</a>
+        <a href="ExternalLogin?providerName=GitHub">GitHub</a>
     </NotAuthorized>
 </AuthorizeView>
