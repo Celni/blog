@@ -19,14 +19,12 @@ namespace Blog.Web.Data
         {
             base.OnModelCreating(builder);
 
-            builder.HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SequenceHiLo);
-            builder.UseHiLo();
+            NpgsqlModelBuilderExtensions.UseHiLo(builder);
 
             builder.Entity<IdentityUser<long>>().ToTable("User");
             builder.Entity<IdentityRole<long>>().ToTable("Role");
             builder.Entity<IdentityUserClaim<long>>().ToTable("UserClaim");
             builder.Entity<IdentityRoleClaim<long>>().ToTable("RoleClaim");
-
             builder.Entity<IdentityUserLogin<long>>().ToTable("UserLogin");
             builder.Entity<IdentityUserRole<long>>().ToTable("UserRole");
             builder.Entity<IdentityUserToken<long>>().ToTable("UserToken");
